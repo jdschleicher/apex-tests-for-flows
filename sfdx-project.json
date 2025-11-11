@@ -1,8 +1,8 @@
 {
     "packageDirectories": [
         {
-            "path": "app/[[app-name]]",
-            "package": "[[app-name]]",
+            "path": "app/nacho-flows",
+            "package": "nacho-flows",
             "versionNumber": "1.0.0.NEXT",
             "default": true,
             "definitionFile": "config/project-scratch-def.json",
@@ -15,8 +15,8 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "54.0",
+    "sourceApiVersion": "64.0",
     "packageAliases": {
-        "[[app-name]]": "[[package-not-yet-created 0Hot Id]]"
+        "nacho-flows": "[[package-not-yet-created 0Hot Id]]"
     }
 }
