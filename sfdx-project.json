@@ -1,0 +1,22 @@
+{
+    "packageDirectories": [
+        {
+            "path": "app/[[app-name]]",
+            "package": "[[app-name]]",
+            "versionNumber": "1.0.0.NEXT",
+            "default": true,
+            "definitionFile": "config/project-scratch-def.json",
+            "dependencies": []
+        },
+        {
+            "path": "app/unpackaged",
+            "default": false
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "54.0",
+    "packageAliases": {
+        "[[app-name]]": "[[package-not-yet-created 0Hot Id]]"
+    }
+}

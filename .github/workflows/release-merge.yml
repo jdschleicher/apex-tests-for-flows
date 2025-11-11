@@ -1,0 +1,53 @@
+name: release-merge-workflow
+
+on:
+  pull_request:
+    branches:
+      - 'release*'
+    types: [closed]
+
+jobs:
+  release-merge-job:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: CHECKOUT THIS REPOSITORY
+        uses: actions/checkout@v2
+
+      - name: GET LATEST CI/CD SCRIPTS FROM unlocked_package_example_cicd_repo
+        run: |
+          echo "[1] CREATE SSH KEY"
+          mkdir ~/.ssh
+          echo '${{ secrets.CENTRALIZED_REPOSITORY_GITHUB_ACCESS_KEY }}' | base64 -di > ~/.ssh/unlocked_package_example_cicd_repo.ssh  
+          chmod 400 ~/.ssh/unlocked_package_example_cicd_repo 
+          echo "[2] INITIALIZE SSH-AGENT"
+          eval "$(ssh-agent -s)"
+          echo "[3] ADD SSH KEY"
+          ssh-add ~/.ssh/unlocked_package_example_cicd_repo
+          echo "[4] REMOVE ./CI-CD DIRECTORY IF IT ALREADY EXISTS"
+          rm -rf ci-cd
+          echo "[5] CLONE CENTRAL CI/CD REPOSITORY"
+          git clone git@github.com:department-of-veterans-affairs/unlocked_package_example_cicd_repo.git -b master ci-cd
+          ls -lha
+          echo "ls -lha ci-cd/modules"
+          ls -lha ci-cd/modules
+
+      - name: RUN CENTRALIZED WORKFLOW
+        shell: pwsh
+        env: 
+          GITHUB_JSON:                                ${{ toJSON(github) }}
+          CENTRALIZED_REPOSITORY_GITHUB_ACCESS_KEY:   ${{ secrets.CENTRALIZED_REPOSITORY_GITHUB_ACCESS_KEY }}
+          SF_DEVHUB_CLIENTID:                         ${{ secrets.SF_DEVHUB_CLIENTID }}
+          SF_DEVHUB_KEY:                              ${{ secrets.SF_DEVHUB_KEY }}
+          SF_DEVHUB_ORG_URL:                          ${{ secrets.SF_DEVHUB_ORG_URL }}
+          SF_INT_AUTH_URL:                            ${{ secrets.SF_INT_AUTH_URL }}
+          CICD_DEVHUB_USERNAME:                       ${{ secrets.CICD_DEVHUB_USERNAME }}
+          PACKAGE_NAME:                               ${{ secrets.PACKAGE_NAME }}
+        run: |
+          $merge_args = @{
+            'GITHUB_WORKFLOW_TMP_FOLDER'   =  '.github-workflow-tmp';
+            'DEVHUB_ALIAS'                 =  'devhub';
+            'INT_ALIAS'                    =  'int';
+          }
+          . ./ci-cd/centralized-workflows/workflow-merge.ps1 @merge_args
