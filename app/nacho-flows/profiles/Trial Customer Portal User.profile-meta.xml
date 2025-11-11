@@ -11,6 +11,11 @@
         <recordType>Case.Premium_Support</recordType>
         <visible>false</visible>
     </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Case.Standard_Support</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
     <userLicense>High Volume Customer Portal</userLicense>
     <userPermissions>
         <enabled>true</enabled>
