@@ -4,23 +4,6 @@
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
         <description>Case Variable Assignment for Subflow inputs</description>
-        <name>Assign_Triggering_Case_to_Case_Variable</name>
-        <label>Assign Triggering Case to Case Variable</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignmentItems>
-            <assignToReference>Case</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Premier_Scenario_Navigator</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <description>Case Variable Assignment for Subflow inputs</description>
         <name>Copy_1_of_Assign_Triggering_Case_to_Case_Variable</name>
         <label>Copy 1 of Assign Triggering Case to Case Variable</label>
         <locationX>0</locationX>
@@ -68,11 +51,11 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.SuppliedCompany</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>hustle</stringValue>
+                </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Assign_Triggering_Case_to_Case_Variable</targetReference>
-            </connector>
             <label>Is URGENT Company</label>
         </rules>
         <rules>
@@ -211,20 +194,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <description>test</description>
-        <name>Premier_Scenario_Navigator</name>
-        <label>Premier Scenario Navigator</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <flowName>Case_Trigger_Premier_Support</flowName>
-        <inputAssignments>
-            <name>ThePremiumCase</name>
-            <value>
-                <elementReference>Case</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <description>test</description>
         <name>Case</name>
