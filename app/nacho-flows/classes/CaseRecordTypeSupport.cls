@@ -26,7 +26,7 @@ public with sharing class CaseRecordTypeSupport {
             Subject = 'Premier Path',
             Origin = 'Phone',
             SuppliedName = 'Acme premier customer',
-            SuppliedCompany = 'AnyCo'
+            SuppliedCompany = 'AnyCo lets hustle test'
         );
         
     }

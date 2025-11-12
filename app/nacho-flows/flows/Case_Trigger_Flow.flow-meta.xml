@@ -2,6 +2,57 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <description>Case Variable Assignment for Subflow inputs</description>
+        <name>Assign_Triggering_Case_to_Case_Variable</name>
+        <label>Assign Triggering Case to Case Variable</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Case</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Premier_Scenario_Navigator</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Case Variable Assignment for Subflow inputs</description>
+        <name>Copy_1_of_Assign_Triggering_Case_to_Case_Variable</name>
+        <label>Copy 1 of Assign Triggering Case to Case Variable</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Case</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Standard_Record_Type</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Case Variable Assignment for Subflow inputs</description>
+        <name>Copy_2_of_Assign_Triggering_Case_to_Case_Variable</name>
+        <label>Copy 2 of Assign Triggering Case to Case Variable</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Case</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_SoSo_Record_Type</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <description>Confirm which record type the Case will be assigned</description>
         <name>RecordType_Identifier</name>
@@ -9,21 +60,18 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <defaultConnector>
-            <targetReference>Get_Standard_Record_Type</targetReference>
+            <targetReference>Copy_1_of_Assign_Triggering_Case_to_Case_Variable</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Is_URGENT_Company</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.SuppliedName</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <stringValue>premier</stringValue>
-                </rightValue>
+                <leftValueReference>$Record.SuppliedCompany</leftValueReference>
+                <operator>EqualTo</operator>
             </conditions>
             <connector>
-                <targetReference>Get_Premier_Record_Type</targetReference>
+                <targetReference>Assign_Triggering_Case_to_Case_Variable</targetReference>
             </connector>
             <label>Is URGENT Company</label>
         </rules>
@@ -38,7 +86,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_SoSo_Record_Type</targetReference>
+                <targetReference>Copy_2_of_Assign_Triggering_Case_to_Case_Variable</targetReference>
             </connector>
             <label>Is SoSo Company</label>
         </rules>
@@ -66,35 +114,6 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <description>Get Premier Record Type</description>
-        <name>Get_Premier_Record_Type</name>
-        <label>Get Premier Record Type</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Assign_Premier_Support</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>SobjectType</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Case</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Premium_Support</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>RecordType</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <description>Get SoSo Record Type</description>
         <name>Get_SoSo_Record_Type</name>
@@ -154,20 +173,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <description>assign premier support</description>
-        <name>Assign_Premier_Support</name>
-        <label>Assign Premier Support</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <inputAssignments>
-            <field>RecordTypeId</field>
-            <value>
-                <elementReference>Get_Premier_Record_Type.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <description>Assign SoSo Support</description>
         <name>Assign_SoSo_support</name>
         <label>Assign SoSo support</label>
@@ -206,4 +211,45 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <description>test</description>
+        <name>Premier_Scenario_Navigator</name>
+        <label>Premier Scenario Navigator</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <flowName>Case_Trigger_Premier_Support</flowName>
+        <inputAssignments>
+            <name>ThePremiumCase</name>
+            <value>
+                <elementReference>Case</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <description>test</description>
+        <name>Case</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>Cases under flow</description>
+        <name>CasesUnderFlow</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>test</description>
+        <name>testtest</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>FlowRecord</objectType>
+    </variables>
 </Flow>

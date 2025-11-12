@@ -60,7 +60,13 @@
         <label>Assign Premier Support</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <inputReference>PremiumSupportCaseRecords</inputReference>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Premier_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
     </recordUpdates>
     <start>
         <locationX>0</locationX>
@@ -75,6 +81,15 @@
         <name>PremiumSupportCaseRecords</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <description>PremiumCase One Time</description>
+        <name>ThePremiumCase</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Case</objectType>
