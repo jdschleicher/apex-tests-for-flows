@@ -17,9 +17,9 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.SuppliedName</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>Contains</operator>
                 <rightValue>
-                    <stringValue>HUSTLE</stringValue>
+                    <stringValue>premier</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -37,6 +37,9 @@
                     <stringValue>SoSo</stringValue>
                 </rightValue>
             </conditions>
+            <connector>
+                <targetReference>Get_SoSo_Record_Type</targetReference>
+            </connector>
             <label>Is SoSo Company</label>
         </rules>
     </decisions>
@@ -93,6 +96,35 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <description>Get SoSo Record Type</description>
+        <name>Get_SoSo_Record_Type</name>
+        <label>Get SoSo Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_SoSo_support</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>SoSo_Support</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <description>Get Stamdard Record Type</description>
         <name>Get_Standard_Record_Type</name>
         <label>Get Standard Record Type</label>
@@ -131,6 +163,20 @@
             <field>RecordTypeId</field>
             <value>
                 <elementReference>Get_Premier_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Assign SoSo Support</description>
+        <name>Assign_SoSo_support</name>
+        <label>Assign SoSo support</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_SoSo_Record_Type.Id</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
