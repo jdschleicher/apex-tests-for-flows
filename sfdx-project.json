@@ -1,7 +1,7 @@
 {
     "packageDirectories": [
         {
-            "path": "app/nacho-flows",
+            "path": "app/nacho-flows/",
             "package": "nacho-flows",
             "versionNumber": "1.0.0.NEXT",
             "default": true,

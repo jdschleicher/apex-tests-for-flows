@@ -16,3 +16,4 @@ coverage/
 # VS Code project settings
 .vscode/*
 !.vscode/extensions.json
+.sf/config.json
