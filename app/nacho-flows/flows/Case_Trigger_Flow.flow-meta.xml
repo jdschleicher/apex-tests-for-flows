@@ -8,6 +8,9 @@
         <label>RecordType Identifier</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Standard_Record_Type</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Is_URGENT_Company</name>
@@ -20,7 +23,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_Premier_Support</targetReference>
+                <targetReference>Get_Premier_Record_Type</targetReference>
             </connector>
             <label>Is URGENT Company</label>
         </rules>
@@ -60,6 +63,64 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Get Premier Record Type</description>
+        <name>Get_Premier_Record_Type</name>
+        <label>Get Premier Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Premier_Support</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Premium_Support</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Stamdard Record Type</description>
+        <name>Get_Standard_Record_Type</name>
+        <label>Get Standard Record Type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Standard_Support</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Case</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Standard_Support</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <description>assign premier support</description>
         <name>Assign_Premier_Support</name>
@@ -69,7 +130,21 @@
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
-                <elementReference>Is_URGENT_Company</elementReference>
+                <elementReference>Get_Premier_Record_Type.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>assign standard support</description>
+        <name>Assign_Standard_Support</name>
+        <label>Assign Standard Support</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>Get_Standard_Record_Type.Id</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -84,5 +159,5 @@
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>
